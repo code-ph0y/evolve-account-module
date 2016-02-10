@@ -1,0 +1,3 @@
+AccountModule_Index:
+    pattern: /AccountModule/index
+    defaults: { _controller: "AccountModule:Index:index"}
