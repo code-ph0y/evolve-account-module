@@ -2,10 +2,28 @@
 
 namespace AccountModule;
 
+use PPI\Framework\Autoload;
 use PPI\Framework\Module\AbstractModule;
 
 class Module extends AbstractModule
 {
+    /**
+     * Initialize Module
+     */
+    public function init($e)
+    {
+        Autoload::add(__NAMESPACE__, dirname(__DIR__));
+    }
+
+    /**
+     * Get Module Name
+     *
+     * @return array
+     */
+    public function getName()
+    {
+        return 'AccountModule';
+    }
 
     /**
      * Get the routes for this module
@@ -27,6 +45,11 @@ class Module extends AbstractModule
         return $this->loadConfig(__DIR__ . '/resources/config/config.php');
     }
 
+    /**
+     * Get the Autoloader configuration for this module
+     *
+     * @return array
+     */
     public function getAutoloaderConfig()
     {
         return array(
@@ -38,4 +61,36 @@ class Module extends AbstractModule
         );
     }
 
+    /**
+     * Get the Service Config
+     *
+     */
+    public function getServiceConfig()
+    {
+        return array('factories' => array(
+
+            'auth.user.storage' => function ($sm) {
+                 return new \AuthModule\Storage\User($sm->get('datasource')->getConnection('main'));
+            },
+
+            'auth.security' => function ($sm) {
+                $us = new \AuthModule\Classes\Security();
+                $us->setSession($sm->get('session'));
+                $us->setUserStorage($sm->get('auth.user.storage'));
+                $us->setConfig($sm->get('config'));
+                return $us;
+            },
+
+            'auth.login.helper' => function ($sm) {
+                $us = new \AuthModule\Classes\Security();
+                $us->setSession($sm->get('session'));
+                return $us;
+            },
+
+            'auth.security.templating.helper' => function ($sm) {
+                return new \AuthModule\Classes\SecurityTemplatingHelper($sm->get('auth.security'));
+            }
+
+        ));
+    }
 }
