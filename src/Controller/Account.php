@@ -6,8 +6,8 @@ use PPI\Framework\Http\Request as Request;
 
 class Account extends SharedController
 {
-    public function signupAction(Request $request)
+    public function profileAction()
     {
-        return $this->render('AccountModule:account:signup.html.php');
+        return $this->render('AccountModule:account:profile.html.php');
     }
 }
