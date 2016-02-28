@@ -1,3 +1,9 @@
-AccountModule_Profile:
-    pattern: /profile
-    defaults: { _controller: "AccountModule:Account:profile"}
+AccountModule_Change_Password:
+    pattern: account/changepassword
+    defaults: { _controller: "AccountModule:Account:changepassword"}
+AccountModule_Change_Password_Save:
+    pattern: account/changepassword/save
+    defaults: { _controller: "AccountModule:Account:changepasswordsave"}
+AccountModule_My_Profile:
+    pattern: account/myprofile
+    defaults: { _controller: "AccountModule:Account:myprofile"}
