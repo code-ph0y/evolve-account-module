@@ -68,29 +68,9 @@ class Module extends AbstractModule
     public function getServiceConfig()
     {
         return array('factories' => array(
-
-            'auth.user.storage' => function ($sm) {
-                 return new \AuthModule\Storage\User($sm->get('datasource')->getConnection('main'));
-            },
-
-            'auth.security' => function ($sm) {
-                $us = new \AuthModule\Classes\Security();
-                $us->setSession($sm->get('session'));
-                $us->setUserStorage($sm->get('auth.user.storage'));
-                $us->setConfig($sm->get('config'));
-                return $us;
-            },
-
-            'auth.login.helper' => function ($sm) {
-                $us = new \AuthModule\Classes\Security();
-                $us->setSession($sm->get('session'));
-                return $us;
-            },
-
-            'auth.security.templating.helper' => function ($sm) {
-                return new \AuthModule\Classes\SecurityTemplatingHelper($sm->get('auth.security'));
+            'account.useraccount.storage' => function ($sm) {
+                 return new \AccountModule\Storage\UserAccount($sm->get('datasource')->getConnection('main'));
             }
-
         ));
     }
 }

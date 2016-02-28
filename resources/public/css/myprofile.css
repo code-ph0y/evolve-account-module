@@ -1,0 +1,29 @@
+#my-profile-panel {
+    margin-left: 23.333%;
+    width: 580px;
+}
+
+.t-main {
+    display: table;
+    width: auto;
+    background-color: #EEEEEE;
+    border: 1px solid #666666;
+    border-spacing: 5px; /*cellspacing:poor IE support for this*/
+}
+
+.t-tr {
+    display: table-row;
+    width: auto;
+    clear: both;
+}
+
+.t-td {
+    float: left; /*fix for  buggy browsers*/
+    display: table-column;
+    width: 200px;
+    background-color: #CCCCCC;
+}
+
+.bold {
+    font-weight: bold;
+}

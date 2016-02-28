@@ -6,9 +6,23 @@ use PPI\Framework\Http\Request as Request;
 
 class Account extends SharedController
 {
-    public function profileAction()
+    public function myprofileAction()
     {
-        return $this->render('AccountModule:account:profile.html.php');
+        $loggedUser   = $this->getService('auth.security')->getUser();
+        $user         = $this->getService('auth.user.storage')->getById($loggedUser->getId());
+        $user_account = $this->getService('account.useraccount.storage')->getByUserId(
+            $loggedUser->getId()
+        );
+
+        # @todo - factor in gender default profile images
+        $profile_image = '';
+        if ($user_account->getProfileImage() == '') {
+            $profile_image = 'modules/accountmodule/images/m_default_profile_image.png';
+        } else {
+            $profile_image = $user_account->getProfileImage();
+        }
+
+        return $this->render('AccountModule:account:myprofile.html.php', compact('user', 'user_account', 'profile_image'));
     }
 
     public function changepasswordAction(Request $request)
