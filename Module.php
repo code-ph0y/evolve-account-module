@@ -70,6 +70,9 @@ class Module extends AbstractModule
         return array('factories' => array(
             'account.useraccount.storage' => function ($sm) {
                  return new \AccountModule\Storage\UserAccount($sm->get('datasource')->getConnection('main'));
+            },
+            'account.user.storage' => function ($sm) {
+                 return new \AccountModule\Storage\User($sm->get('datasource')->getConnection('main'));
             }
         ));
     }

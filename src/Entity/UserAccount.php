@@ -17,6 +17,11 @@ class UserAccount
 
     protected $mobile        = null;
 
+    // Virtual
+    protected $first_name    = null;
+    protected $last_name     = null;
+    protected $email         = null;
+
     public function __construct($data = array())
     {
         foreach ($data as $key => $value) {
@@ -124,5 +129,35 @@ class UserAccount
     public function getProfileImage()
     {
         return $this->profile_image;
+    }
+
+    /**
+     * Get the value of First Name
+     *
+     * @return mixed
+     */
+    public function getFirstName()
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * Get the value of Last Name
+     *
+     * @return mixed
+     */
+    public function getLastName()
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * Get the value of Email
+     *
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 }

@@ -7,3 +7,9 @@ AccountModule_Change_Password_Save:
 AccountModule_My_Profile:
     pattern: account/myprofile
     defaults: { _controller: "AccountModule:Account:myprofile"}
+AccountModule_Edit_My_Profile:
+    pattern: account/myprofile/edit/{user_id}
+    defaults: { _controller: "AccountModule:Account:editmyprofile"}
+AccountModule_Save_My_Profile:
+    pattern: account/myprofile/save
+    defaults: { _controller: "AccountModule:Account:savemyprofile"}

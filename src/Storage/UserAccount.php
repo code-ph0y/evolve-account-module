@@ -67,8 +67,9 @@ class UserAccount extends BaseStorage
     public function getByUserId($user_id)
     {
         $row = $this->ds->createQueryBuilder()
-            ->select('ua.*')
+            ->select('ua.*, u.first_name, u.last_name, u.email')
             ->from($this->meta_data['table'], 'ua')
+            ->leftJoin('ua', 'user', 'u', 'u.id = ua.user_id')
             ->where('ua.user_id = :user_id')->setParameter(':user_id', $user_id)
             ->execute()
             ->fetch($this->meta_data['fetchMode']);

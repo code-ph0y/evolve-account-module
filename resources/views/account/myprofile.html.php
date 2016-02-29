@@ -6,6 +6,13 @@
 
 <div id="my-profile-panel">
     <h1>My Profile</h1>
+    <a
+    class="btn btn-default"
+    role="button"
+    href="<?php echo $view['router']->generate(
+        'AccountModule_Edit_My_Profile',
+        array('user_id' => $user->getId())
+    ); ?>">Edit My Profile</a>
 
     <div class="row">
         <div class="col-xl-4">

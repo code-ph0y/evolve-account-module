@@ -41,7 +41,7 @@ class User extends BaseStorage
      * @return mixed
      * @throws \Exception
      */
-    public function getByID($user_id)
+    public function getById($user_id)
     {
         $row = $this->ds->createQueryBuilder()
             ->select('u.*, ul.title AS ul_title, ul.id AS ul_id')
@@ -56,6 +56,23 @@ class User extends BaseStorage
         }
 
         return new UserEntity($row);
+    }
+
+    /**
+     * Check to see if email has changed
+     *
+     * @param integer $user_id
+     * @return boolean
+     */
+    public function isEmailChanged($user_id, $email_address)
+    {
+        $user = $this->getById($user_id);
+
+        if ($user->getEmail() == $email_address) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+# @todo - Make functions secure i.e call isLoggedIn function
 namespace AccountModule\Controller;
 
 use AccountModule\Controller\Shared as SharedController;
@@ -23,6 +24,78 @@ class Account extends SharedController
         }
 
         return $this->render('AccountModule:account:myprofile.html.php', compact('user', 'user_account', 'profile_image'));
+    }
+
+    public function editmyprofileAction()
+    {
+        $loggedUser = $this->getService('auth.security')->getUser();
+        $account    = $this->getService('account.useraccount.storage')->getByUserId($loggedUser->getId());
+        return $this->render('AccountModule:account:editmyprofile.html.php', compact('account'));
+    }
+
+    public function savemyprofileAction(Request $request)
+    {
+        $post = $request->request->all();
+        // Get storage classes
+        $userStorage        = $this->getService('account.user.storage');
+        $userAccountStorage = $this->getService('account.useraccount.storage');
+
+        // Validate input
+        $missingFields = array();
+        $requiredKeys  = array(
+            'accountFirstName',
+            'accountLastName',
+            'accountEmail'
+        );
+
+        // Check for missing fields, or fields being empty.
+        foreach ($requiredKeys as $field) {
+            if (!isset($post[$field]) || trim($post[$field]) == '') {
+                $missingFields[] = $field;
+            }
+        }
+
+        // If any fields were missing, inform the user
+        if (!empty($missingFields)) {
+            $this->setFlash('danger', 'Some required fields were blank. Please re-evaluate your input and try again.');
+            return $this->render('AccountModule:account:editmyprofile.html.php');
+        }
+
+        // Check if email address has changed
+        if ($userStorage->isEmailChanged($post['accountUserId'], $post['accountEmail'])) {
+            // Check that email isn't already in the system
+            if ($userStorage->existsByEmail($post['accountUserId'])) {
+                $this->setFlash('danger', 'Email Address already exists. Please re-evaluate your input and try again.');
+                return $this->render('AccountModule:account:editmyprofile.html.php');
+            }
+        }
+
+        // Prepare user data for update
+        $userData = array(
+            'first_name' => $post['accountFirstName'],
+            'last_name' => $post['accountLastName'],
+            'email' => $post['accountEmail']
+        );
+
+        // Update user data
+        $userStorage->update($post['accountUserId'], $userData);
+
+        // Prepare user account data for update
+        $userAccountData = array(
+            'address_1' => $post['accountAddress1'],
+            'address_2' => $post['accountAddress2'],
+            'city' => $post['accountCity'],
+            'state' => $post['accountState'],
+            'country' => $post['accountCountry'],
+            'zip_code' => $post['accountZipCode'],
+            'mobile' => $post['accountMobile']
+        );
+
+        // Update user account data
+        $userAccountStorage->update($post['accountUserId'], $userAccountData);
+
+        $this->setFlash('success', 'Account details updated successfully');
+        return $this->redirectToRoute('AccountModule_Edit_My_Profile', array('user_id' => $post['accountUserId']));
     }
 
     public function changepasswordAction(Request $request)
@@ -72,7 +145,7 @@ class Account extends SharedController
             }
         }
 
-        // If any fields were missing, inform the client
+        // If any fields were missing, inform the user
         if (!empty($missingFields)) {
             $this->setFlash('danger', 'Some required fields were blank. Please re-evaluate your input and try again.');
             return $this->render('AccountModule:account:changepassword.html.php');
