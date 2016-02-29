@@ -73,8 +73,8 @@ class Account extends SharedController
         // Prepare user data for update
         $userData = array(
             'first_name' => $post['accountFirstName'],
-            'last_name' => $post['accountLastName'],
-            'email' => $post['accountEmail']
+            'last_name'  => $post['accountLastName'],
+            'email'      => $post['accountEmail']
         );
 
         // Update user data
@@ -84,11 +84,11 @@ class Account extends SharedController
         $userAccountData = array(
             'address_1' => $post['accountAddress1'],
             'address_2' => $post['accountAddress2'],
-            'city' => $post['accountCity'],
-            'state' => $post['accountState'],
-            'country' => $post['accountCountry'],
-            'zip_code' => $post['accountZipCode'],
-            'mobile' => $post['accountMobile']
+            'city'      => $post['accountCity'],
+            'state'     => $post['accountState'],
+            'country'   => $post['accountCountry'],
+            'zip_code'  => $post['accountZipCode'],
+            'mobile'    => $post['accountMobile']
         );
 
         // Update user account data
